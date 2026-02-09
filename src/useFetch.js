@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
-const useFetch =(url) => {
+const useFetch =(url) => { // the useFetch function is a custom hook that takes a URL as an argument and returns the data, loading state, and error state of the fetch request
     const [data, setData] = useState(null);
     const [isPending, setIsPending] = useState(true); // to track the loading state of the data
     const [error, setError] = useState(null); // to track any errors that may occur while fetching the data
 
-    useEffect(() => {
+    useEffect(() => { // the useEffect hook is used to fetch the data from the specified URL when the component mounts and whenever the URL changes
         setTimeout(() => {
             fetch(url)
                 .then(res => {
