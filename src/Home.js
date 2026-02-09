@@ -24,33 +24,39 @@ const Home = () => {
 //      );
 // }
 
-    const [blogs, setBlogs] = useState([
-        { title: 'My new website', body: 'lorem ipsum...', author: 'kerubo', id: 1 },
-        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'sheba', id: 2 },
-        { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'kerubo', id: 3 }
-    ]);
+    const [blogs, setBlogs] = useState(null);
 
 
     const [name, setName] = useState('kerubo');
 
-    const handleDelete = (id) => {
-        const newBlogs = blogs.filter(blog => blog.id !== id); // filter out the blog with the specified id
-        setBlogs(newBlogs);
-    };
+    // const handleDelete = (id) => {
+    //     const newBlogs = blogs.filter(blog => blog.id !== id); // filter out the blog with the specified id
+    //     setBlogs(newBlogs);
+    // };
 
     useEffect(() => {
-        console.log('use effect ran');
-        console.log(blogs);
+        fetch('http://localhost:8000/blogs')
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            setBlogs(data);
+        })
         
-    }, [name]);  // only re-run the effect if blogs changes 
+    }, []);  // only re-run the effect if blogs changes 
 
     return (
         <div className="home">
-            <BlogList blogs={blogs} title="All Blogs:" handleDelete={handleDelete} /> 
+            {blogs && <BlogList blogs={blogs} title="All Blogs:" /> } // only render the BlogList component if blogs is not null
             {/* <BlogList blogs={blogs.filter(blog => blog.author === 'kerubo')} title="Kerubo's Blogs:" /> // passing filtered blogs as props to the component */}
 
-            <button onClick={() => setName('sheba')}>change name</button>
-            <p>{name}</p>
+            {/* <button onClick={() => setName('sheba')}>change name</button>
+            <p>{name}</p> */}
+
+
+
+
         </div>
     );         
  
