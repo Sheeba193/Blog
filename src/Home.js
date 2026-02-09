@@ -25,37 +25,35 @@ const Home = () => {
 // }
 
     const [blogs, setBlogs] = useState(null);
+    const [isPending, setIsPending] = useState(true); // to track the loading state of the data
 
-
-    const [name, setName] = useState('kerubo');
-
+    // const [name, setName] = useState('kerubo');
     // const handleDelete = (id) => {
     //     const newBlogs = blogs.filter(blog => blog.id !== id); // filter out the blog with the specified id
     //     setBlogs(newBlogs);
     // };
 
     useEffect(() => {
-        fetch('http://localhost:8000/blogs')
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            console.log(data);
-            setBlogs(data);
-        })
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs')
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+                setBlogs(data);
+                setIsPending(false); // set isPending to false once the data has been fetched
+            })
+            }, 1000); // simulate a delay of 1 second before fetching the data
         
     }, []);  // only re-run the effect if blogs changes 
 
     return (
         <div className="home">
+            {isPending && <div>Loading...</div>} {/* render a loading message while the data is being fetched */    }
             {blogs && <BlogList blogs={blogs} title="All Blogs:" /> } // only render the BlogList component if blogs is not null
-            {/* <BlogList blogs={blogs.filter(blog => blog.author === 'kerubo')} title="Kerubo's Blogs:" /> // passing filtered blogs as props to the component */}
-
-            {/* <button onClick={() => setName('sheba')}>change name</button>
-            <p>{name}</p> */}
-
-
-
+            
+            {/* <BlogList blogs={blogs.filter(blog => blog.author === 'kerubo')} title="Kerubo's Blogs:" /> // passing filtered blogs as props to the component */}{/* <button onClick={() => setName('sheba')}>change name</button><p>{name}</p> */}
 
         </div>
     );         
