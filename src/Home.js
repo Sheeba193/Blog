@@ -1,7 +1,9 @@
 import { useState, useEffect, use } from 'react';
 import BlogList from './BlogList';
+import useFetch from './useFetch';
 
 const Home = () => {
+    const {data:blogs, isPending, error} = useFetch('http://localhost:8000/blogs');
 
 //     // let name = 'kerubo';
 //     const [name, setName] = useState('kerubo');
@@ -24,9 +26,7 @@ const Home = () => {
 //      );
 // }
 
-    const [blogs, setBlogs] = useState(null);
-    const [isPending, setIsPending] = useState(true); // to track the loading state of the data
-    const [error, setError] = useState(null); // to track any errors that may occur while fetching the data
+    
 
     // const [name, setName] = useState('kerubo');
     // const handleDelete = (id) => {
@@ -34,29 +34,7 @@ const Home = () => {
     //     setBlogs(newBlogs);
     // };
 
-    useEffect(() => {
-        setTimeout(() => {
-            fetch('http://localhost:8000/blogs')
-                .then(res => {
-                    console.log(res);
-                    if (!res.ok) { // check if the response is not ok (status code is not in the range of 200-299)
-                        throw Error('could not fetch the data for that resource');
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    setBlogs(data);
-                    setIsPending(false); // set isPending to false once the data has been fetched
-                    setError(null); // set error to null once the data has been fetched successfully
-                })
-                .catch(err => {
-                    setError(err.message); // set the error message if there was an error fetching the data
-                    setIsPending(false); // set isPending to false if there was an error fetching the data
-                });
-            }, 1000); // simulate a delay of 1 second before fetching the data
-        
-    }, []);  // only re-run the effect if blogs changes 
+      // only re-run the effect if blogs changes 
 
     return (
         <div className="home">
