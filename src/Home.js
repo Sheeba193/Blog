@@ -26,6 +26,7 @@ const Home = () => {
 
     const [blogs, setBlogs] = useState(null);
     const [isPending, setIsPending] = useState(true); // to track the loading state of the data
+    const [error, setError] = useState(null); // to track any errors that may occur while fetching the data
 
     // const [name, setName] = useState('kerubo');
     // const handleDelete = (id) => {
@@ -36,20 +37,30 @@ const Home = () => {
     useEffect(() => {
         setTimeout(() => {
             fetch('http://localhost:8000/blogs')
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                console.log(data);
-                setBlogs(data);
-                setIsPending(false); // set isPending to false once the data has been fetched
-            })
+                .then(res => {
+                    console.log(res);
+                    if (!res.ok) { // check if the response is not ok (status code is not in the range of 200-299)
+                        throw Error('could not fetch the data for that resource');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    setBlogs(data);
+                    setIsPending(false); // set isPending to false once the data has been fetched
+                    setError(null); // set error to null once the data has been fetched successfully
+                })
+                .catch(err => {
+                    setError(err.message); // set the error message if there was an error fetching the data
+                    setIsPending(false); // set isPending to false if there was an error fetching the data
+                });
             }, 1000); // simulate a delay of 1 second before fetching the data
         
     }, []);  // only re-run the effect if blogs changes 
 
     return (
         <div className="home">
+            {error && <div>{error}</div>} {/* render the error message if there was an error fetching the data */   }
             {isPending && <div>Loading...</div>} {/* render a loading message while the data is being fetched */    }
             {blogs && <BlogList blogs={blogs} title="All Blogs:" /> } // only render the BlogList component if blogs is not null
             
