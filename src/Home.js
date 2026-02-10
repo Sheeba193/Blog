@@ -39,7 +39,7 @@ const Home = () => {
         <div className="home">
             {error && <div>{error}</div>} {/* render the error message if there was an error fetching the data */   }
             {isPending && <div>Loading...</div>} {/* render a loading message while the data is being fetched */    }
-            {blogs && <BlogList blogs={blogs} title="All Blogs:" /> } // only render the BlogList component if blogs is not null
+            {blogs && <BlogList blogs={blogs} title="All Blogs:" /> } {/* render the BlogList component and pass the fetched blogs as props if the data was successfully fetched */    }
             
             {/* <BlogList blogs={blogs.filter(blog => blog.author === 'kerubo')} title="Kerubo's Blogs:" /> // passing filtered blogs as props to the component */}{/* <button onClick={() => setName('sheba')}>change name</button><p>{name}</p> */}
 
