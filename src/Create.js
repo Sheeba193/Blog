@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Create = () => {
     const [title, setTitle] = useState(''); //useState hook to create a state variable called title and a function called setTitle to update it. The initial value of title is an empty string.
     const [body, setBody] = useState('');//useState hook to create a state variable called body and a function called setBody to update it. The initial value of body is an empty string.
     const [author, setAuthor] = useState('sheba'); //useState hook to create a state variable called author and a function called setAuthor to update it. The initial value of author is 'sheba'.
     const [isPending, setIsPending] = useState(false); //useState hook to create a state variable called isPending and a function called setIsPending to update it. The initial value of isPending is false.
+    const history = useHistory(); //useHistory hook to get access to the history object, which allows us to programmatically navigate to different routes in our application.
 
     const handleSubmit = (e) => {
         e.preventDefault(); //prevents the default behavior of the form submission, which is to refresh the page.
@@ -18,7 +20,11 @@ const Create = () => {
         }).then(() => {
             console.log('new blog added'); //logs a message to the console when the request is complete.
             setIsPending(false); //sets isPending to false when the request is complete.
+            history.push('/');  
+            // history.go('-1'); //redirects the user to the home page after successfully adding a blog.  
         });
+
+        
     };
     
     return ( 
