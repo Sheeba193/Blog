@@ -1,7 +1,8 @@
 import Home from './Home';
 import Navbar from './Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';  // Importing BrowserRouter, Route, and Switch for routing
-
+import Create from './Create';
+import BlogDetails from './BlogDetails';
 
 
 function App() {
@@ -11,8 +12,14 @@ function App() {
       <Navbar />
       <div className="content">
         <Switch>
-          <Route path="/">
+           <Route exact path="/">  {/*Using 'exact' to ensure it only matches the exact path */}
             <Home />
+          </Route>
+          <Route path="/create">
+              <Create />
+          </Route>
+          <Route path="/blogs/:id">  {/* Dynamic route for blog details */}
+              <BlogDetails />
           </Route>
         </Switch>
       </div>
@@ -23,3 +30,21 @@ function App() {
 }
 
 export default App;
+
+// In react router-dom v6 it will be: function App() {
+//   return (
+//     <Router>
+//       <div className="App">
+//         <Navbar />
+//         <div className="content">
+//           <Routes>
+//             <Route path="/" element={<Home />} />
+//             <Route path="/create" element={<Create />} />
+//           </Routes>
+//         </div>
+//       </div>
+//     </Router>
+//   );
+// }
+
+
